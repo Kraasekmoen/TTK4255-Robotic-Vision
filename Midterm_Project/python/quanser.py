@@ -35,14 +35,14 @@ class Quanser:
         # Tip: Use np.hstack to concatenate the horizontal and vertical residual components
         # into a single 1D array. Note: The plotting code will not work correctly if you use
         # a different ordering.
-        r = np.zeros(2*self.heli_points.shape[1]) # Placeholder, remove me!
-        #for i in range(0, self.heli_points.shape[1]):
-        print(self.heli_points.shape, self.uv_hat.shape, r.shape)
-
+        ###
+        uv = uv*weights
+        r = np.hstack(((uv_hat[0,:] - uv[0,:]), (uv_hat[1,:] - uv[1,:])))
+        ###
         return r
 
     def draw(self, uv, weights, image_number):
-        I = plt.imread('.\\data\\video%04d.jpg' % image_number)
+        I = plt.imread('.\\quanser_image_data\\video%04d.jpg' % image_number)
         plt.imshow(I)
         plt.scatter(*uv[:, weights == 1], linewidths=1, edgecolor='black', color='white', s=80, label='Observed')
         plt.scatter(*self.uv_hat, color='red', label='Predicted', s=10)

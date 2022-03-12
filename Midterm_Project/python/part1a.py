@@ -3,18 +3,20 @@ import numpy as np
 from gauss_newton import jacobian2point, gauss_newton
 from quanser import Quanser
 
-image_number = 40              # Image to run on (must be in the range [0, 350])
-p0 = np.array([0.0, 0.0, 0.0]) # Initial parameters (yaw, pitch, roll)
-step_size = 0.9                # Gauss-Newton step size
-num_steps = 10                 # Gauss-Newton iterations
-epsilon = 1e-6                 # Finite-difference epsilon
+image_number = 87                   # Image to run on (must be in the range [0, 350])
+p0 = np.array([0.0, 0.0, 0.0])      # Initial parameters (yaw, pitch, roll)
+step_size = 0.9                     # Gauss-Newton step size
+num_steps = 1000                   # Gauss-Newton iterations
+epsilon = 1e-6                  # Finite-difference epsilon
+
+xtol = 0.01                         # Gauss-Newton early stopping tolerance
 
 # Task 1.3:
 # Comment out these two lines after testing your implementation
 # of the "residuals" method.
 #
-image_number = 0
-p0 = np.array([11.6, 28.9, 0.0])*np.pi/180
+##image_number = 0
+##p0 = np.array([11.6, 28.9, 0.0])*np.pi/180
 
 # Tip:
 # Here, "uv" is a 2x7 array of detected marker locations.
@@ -49,7 +51,7 @@ if image_number == 0:
     print(resfun(p0))
     quit()
 
-p = gauss_newton(resfun=resfun, jacfun=jacfun, p0=p0, step_size=step_size, num_steps=num_steps)
+p = gauss_newton(resfun=resfun, jacfun=jacfun, p0=p0, step_size=step_size, num_steps=num_steps, xtol=xtol)
 
 # Calculate and print the reprojection errors at the optimum
 r = resfun(p).reshape((2,-1))
