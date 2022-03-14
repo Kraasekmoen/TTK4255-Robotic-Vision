@@ -14,12 +14,15 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     #
     weights = detections[:, ::3]
     reprojection_errors = []
+    image_errors = []
     for i in range(all_p.shape[0]):
         valid = np.reshape(all_r[i], [2,-1])[:, weights[i,:] == 1]
         reprojection_errors.extend(np.linalg.norm(valid, axis=0))
+        image_errors.append(np.average(np.linalg.norm(valid, axis=0)))
     reprojection_errors = np.array(reprojection_errors)
     print('Reprojection error over whole image sequence:')
     print('- Maximum: %.04f pixels' % np.max(reprojection_errors))
+    print('- Image of ___: %d' % image_errors.index(np.min(image_errors)))
     print('- Average: %.04f pixels' % np.mean(reprojection_errors))
     print('- Median: %.04f pixels' % np.median(reprojection_errors))
 
@@ -37,7 +40,7 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     #
     # Figure: Comparison between logged encoder values and vision estimates
     #
-    logs       = np.loadtxt('.\\data\\logs.txt')
+    logs       = np.loadtxt('../data/logs.txt')
     enc_time   = logs[:,0]
     enc_yaw    = logs[:,1]
     enc_pitch  = logs[:,2]
@@ -76,3 +79,26 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     axes[2].set_ylabel('Roll (radians)')
     axes[2].set_xlabel('Image number')
     plt.tight_layout()
+    error_yaw = []
+    error_pitch = []
+    error_roll = []
+    #iter = 0
+    for i in range(len(vis_frame)):
+        if i*28 < len(vis_frame):
+            iter = i+1 * 28
+        else:
+            iter = len(enc_frame)
+        e_yaw = np.average(enc_yaw[i:iter])
+        e_pitch = np.average(enc_pitch[i:iter])
+        e_roll = np.average(enc_roll[i:iter])
+        error_yaw.append(np.abs(e_yaw - vis_yaw[i]))
+        error_pitch.append(np.abs(e_pitch - vis_pitch[i]))
+        error_roll.append(np.abs(e_roll - vis_roll[0]))
+
+    error_yaw.pop(0)
+    error_pitch.pop(0)
+    error_roll.pop(0)
+    print('Vision estimate errors: ')
+    print('- Yaw: %.04f , image: %d' % (np.min(error_yaw), error_yaw.index(np.min(error_yaw))))
+    print('- Pitch: %.04f , image: %d' % (np.min(error_pitch), error_pitch.index(np.min(error_pitch))))
+    print('- Roll: %.04f , image: %d' % (np.min(error_roll), error_roll.index(np.min(error_roll))))

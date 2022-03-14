@@ -8,7 +8,7 @@ from scipy.optimize import least_squares
 from quanser import Quanser
 from plot_all import *
 
-all_detections = np.loadtxt('.\\data\\detections.txt')
+all_detections = np.loadtxt('../data/detections.txt')
 quanser = Quanser()
 
 p = np.array([0.0, 0.0, 0.0])
@@ -33,6 +33,6 @@ for i in range(len(all_detections)):
 all_p = np.array(all_p)
 all_r = np.array(all_r)
 # Tip: See comment in plot_all.py regarding the last argument.
-plot_all(all_p, all_r, all_detections, subtract_initial_offset=False)
+plot_all(all_p, all_r, all_detections, subtract_initial_offset=True)
 plt.savefig('out_part1b.png')
 plt.show()

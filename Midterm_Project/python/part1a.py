@@ -3,20 +3,19 @@ import numpy as np
 from gauss_newton import jacobian2point, gauss_newton
 from quanser import Quanser
 
-image_number = 87                   # Image to run on (must be in the range [0, 350])
-p0 = np.array([0.0, 0.0, 0.0])      # Initial parameters (yaw, pitch, roll)
-step_size = 0.9                     # Gauss-Newton step size
-num_steps = 1000                   # Gauss-Newton iterations
-epsilon = 1e-6                  # Finite-difference epsilon
-
-xtol = 0.01                         # Gauss-Newton early stopping tolerance
+image_number = 40              # Image to run on (must be in the range [0, 350])
+p0 = np.array([0.0, 0.0, 0.0]) # Initial parameters (yaw, pitch, roll)
+step_size = 0.9                # Gauss-Newton step size
+num_steps = 10                 # Gauss-Newton iterations
+xtol = 0.01                    # StepTolerance convergence threshold
+epsilon = 1e-6                 # Finite-difference epsilon
 
 # Task 1.3:
 # Comment out these two lines after testing your implementation
 # of the "residuals" method.
 #
-##image_number = 0
-##p0 = np.array([11.6, 28.9, 0.0])*np.pi/180
+image_number = 87
+# p0 = np.array([11.6, 28.9, 0.0])*np.pi/180
 
 # Tip:
 # Here, "uv" is a 2x7 array of detected marker locations.
@@ -25,7 +24,7 @@ xtol = 0.01                         # Gauss-Newton early stopping tolerance
 # not detected. Which entries are valid is encoded in
 # the "weights" array, which is a 1D array of length 7.
 #
-detections = np.loadtxt('.\\data\\detections.txt')
+detections = np.loadtxt('../data/detections.txt')
 weights = detections[image_number, ::3]
 uv = np.vstack((detections[image_number, 1::3], detections[image_number, 2::3]))
 
@@ -51,7 +50,7 @@ if image_number == 0:
     print(resfun(p0))
     quit()
 
-p = gauss_newton(resfun=resfun, jacfun=jacfun, p0=p0, step_size=step_size, num_steps=num_steps, xtol=xtol)
+p = gauss_newton(resfun=resfun, jacfun=jacfun, p0=p0, step_size=step_size, xtol=xtol)#, max_steps=num_steps)
 
 # Calculate and print the reprojection errors at the optimum
 r = resfun(p).reshape((2,-1))
@@ -64,5 +63,5 @@ print('Median:   %5.02f px' % np.median(e))
 
 # Visualize the frames and marker points
 quanser.draw(uv, weights, image_number)
-plt.savefig('out_part1a.png')
+#plt.savefig('out_part1a.png')
 plt.show()
