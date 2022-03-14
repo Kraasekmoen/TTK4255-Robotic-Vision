@@ -3,10 +3,10 @@ import numpy as np
 from gauss_newton import jacobian2point, gauss_newton
 from quanser import Quanser
 
-image_number = 87                   # Image to run on (must be in the range [0, 350])
-p0 = np.array([0.0, 0.0, 0.0])      # Initial parameters (yaw, pitch, roll)
+image_number = 40                   # Image to run on (must be in the range [0, 350])
+p0 = np.array([0.7, 1.6, -2.0])      # Initial parameters (yaw, pitch, roll)
 step_size = 0.9                     # Gauss-Newton step size
-num_steps = 1000                   # Gauss-Newton iterations
+num_steps = 100                   # Gauss-Newton iterations
 epsilon = 1e-6                  # Finite-difference epsilon
 
 xtol = 0.01                         # Gauss-Newton early stopping tolerance
@@ -25,7 +25,7 @@ xtol = 0.01                         # Gauss-Newton early stopping tolerance
 # not detected. Which entries are valid is encoded in
 # the "weights" array, which is a 1D array of length 7.
 #
-detections = np.loadtxt('.\\data\\detections.txt')
+detections = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\detections.txt')
 weights = detections[image_number, ::3]
 uv = np.vstack((detections[image_number, 1::3], detections[image_number, 2::3]))
 

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_all(all_p, all_r, detections, subtract_initial_offset):
+def plot_all(all_p, all_r, detections, subtract_initial_offset, num_weights):
     """
     Tip: The logs have been time-synchronized with the image sequence,
     but there may be an offset between the motor angles and the vision
@@ -37,7 +37,7 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     #
     # Figure: Comparison between logged encoder values and vision estimates
     #
-    logs       = np.loadtxt('.\\data\\logs.txt')
+    logs       = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\\logs.txt')
     enc_time   = logs[:,0]
     enc_yaw    = logs[:,1]
     enc_pitch  = logs[:,2]
@@ -55,7 +55,7 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     enc_frame = enc_time*vis_fps
     vis_frame = np.arange(all_p.shape[0])
 
-    fig,axes = plt.subplots(3, 1, figsize=[6,6], sharex='col')
+    fig,axes = plt.subplots(4, 1, figsize=[6,6], sharex='col')
     axes[0].plot(enc_frame, enc_yaw, 'k:', label='Encoder log')
     axes[0].plot(vis_frame, vis_yaw, 'k', label='Vision estimate')
     axes[0].legend()
@@ -75,4 +75,10 @@ def plot_all(all_p, all_r, detections, subtract_initial_offset):
     axes[2].set_ylim([-0.6, 0.6])
     axes[2].set_ylabel('Roll (radians)')
     axes[2].set_xlabel('Image number')
+
+    axes[3].scatter(vis_frame, num_weights, s=1, c='black')
+    axes[3].set_xlim([0, vis_frame[-1]])
+    axes[3].set_ylim([0, 7.5])
+    axes[3].set_ylabel('Visible markers')
+    axes[3].set_xlabel('Image number')
     plt.tight_layout()

@@ -4,10 +4,10 @@ from common import *
 
 # Tip: The solution from HW4 is inside common.py
 
-K = np.loadtxt('.\\data\\K.txt')
-u = np.loadtxt('.\\data\\platform_corners_image.txt')
-X = np.loadtxt('.\\data\\platform_corners_metric.txt')
-I = plt.imread('.\\data\\video0000.jpg') # Only used for plotting
+K = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\\K.txt')
+u = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\\platform_corners_image.txt')
+X = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\\platform_corners_metric.txt')
+I = plt.imread('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\quanser_image_data\\video0000.jpg') # Only used for plotting
 
 # Example: Compute predicted image locations and reprojection errors
 T_hat = translate(-0.3, 0.1, 1.0)@rotate_x(1.8)

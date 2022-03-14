@@ -4,9 +4,9 @@ from common import *
 
 class Quanser:
     def __init__(self):
-        self.K = np.loadtxt('.\\data\\K.txt')
-        self.heli_points = np.loadtxt('.\\data\\heli_points.txt').T
-        self.platform_to_camera = np.loadtxt('.\\data\\platform_to_camera.txt')
+        self.K = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\\K.txt')
+        self.heli_points = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\\heli_points.txt').T
+        self.platform_to_camera = np.loadtxt('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\data\\platform_to_camera.txt')
 
     def residuals(self, uv, weights, yaw, pitch, roll):
         # "uv" is a 2x7 vector of the pixel coordinates of the detected markers. If a particular marker was not detected, the 'uv' entry may be invalid.
@@ -36,13 +36,14 @@ class Quanser:
         # into a single 1D array. Note: The plotting code will not work correctly if you use
         # a different ordering.
         ###
-        uv = uv*weights
         r = np.hstack(((uv_hat[0,:] - uv[0,:]), (uv_hat[1,:] - uv[1,:])))
+        r[0:7] = r[0:7]*weights
+        r[7:14] = r[7:14]*weights
         ###
         return r
 
     def draw(self, uv, weights, image_number):
-        I = plt.imread('.\\quanser_image_data\\video%04d.jpg' % image_number)
+        I = plt.imread('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\RobVis\\TTK4255-Robotic-Vision\\Midterm_Project\\quanser_image_data\\video%04d.jpg' % image_number)
         plt.imshow(I)
         plt.scatter(*uv[:, weights == 1], linewidths=1, edgecolor='black', color='white', s=80, label='Observed')
         plt.scatter(*self.uv_hat, color='red', label='Predicted', s=10)
