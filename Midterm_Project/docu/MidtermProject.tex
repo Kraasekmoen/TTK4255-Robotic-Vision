@@ -31,6 +31,7 @@
 %linkcolor = black,
 %citecolor = black]{hyperref} % For hyperlinks in the PDF
 \usepackage{graphicx, multicol} % Enhanced support for graphics
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage{xcolor} % Driver-independent color extensions
 %\usepackage{marvosym, wasysym} % More symbols
@@ -41,7 +42,7 @@
 %\usepackage{booktabs} % Enhances quality of tables
 \usepackage{listings}
 \usepackage{enumitem}
-\usepackage{caption}
+
 
 %\usepackage{csquotes} % Context sensitive quotation facilities
 \usepackage[yyyymmdd]{datetime} % Uses YEAR-MONTH-DAY format for dates
@@ -75,14 +76,16 @@
         TTK4255\\ % Your lecture or course
         \footnotesize % Authors text size
         \hfill\\
-        Fabian Höldin % Your name, your matriculation number
+        Fabian Höldin \\
+        Sindre {\O}versveen% Your name, your matriculation number
     \end{minipage}
     \begin{minipage}{0.4\textwidth} % Center of title section
         \centering
         \large % Title text size
         Robotic Vision \\ % Assignment title and number
         \normalsize % Subtitle text size
-        Midterm project: Model-based pose estimation\\ % Assignment subtitle
+        Midterm project:\\
+        Model-based pose estimation\\ % Assignment subtitle
     \end{minipage}
     \begin{minipage}{0.295\textwidth} % Right side of title section
         \raggedleft
@@ -98,7 +101,18 @@
 
 \section{Estimate the helicopter angles}
     \subsection*{Task 1.1}
+    \begin{figure*}[h]
+        \centering
+        \includegraphics[width= 0.7 \linewidth]{../python/Task1.1_Sketch}
+        \caption{Projection into camera plane}
+    \end{figure*}
+    As you can see in the above sketch, two points from the 3D world coordinate system can correspond to one in the camera view.
+    This is due to the loss of one dimension (depth), what makes it impossible to distinguish single points that only differ in their distance to the camera.
+
     \subsection*{Task 1.2}
+    The linearization of absolute values is probably much less efficient.
+    Calculating horizontal and vertical differences is a very trivial task and preserves the uniqueness of configurations (+-u,v).
+
     \subsection*{Task 1.3}
     Optimal angles (residuals) on image 0:
     \begin{center}
@@ -177,6 +191,93 @@
             While Levenberg-Marquardt is robust in ensuring that each step of the optimization remains solvable, it suffers from a sort of 'maximum accuracy' - with no guarantees beyond 'minimum + 1'.
             This must be taken into account when determining the stopping criterion.
     \end{enumerate}
+
+\section{Estimate the platform pose}
+    \subsection*{Task 2.1}
+    \begin{figure}[h]
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width= \textwidth]{../python/out_part2_1a}
+            \caption{Output equation $\bm{\tilde{u}} = \bm{KH}
+                \begin{bmatrix}
+                    X & Y & 1
+                \end{bmatrix}
+            ^T$ }
+
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.45\textwidth}
+            \centering
+            \includegraphics[width= \textwidth]{../python/out_part2_1b}
+            \caption{Output equation $\bm{\tilde{u}} = \bm{K} \left[ \bm{R t} \right]
+                \begin{bmatrix}
+                    X & Y & 0 & 1
+                \end{bmatrix}
+            ^T$ }
+        \end{subfigure}
+        \hfill
+    \end{figure}
+    In (a) we are getting all zero reprojection errors because can use the direct linear transformation $\bm{H}$ which is the most accurate we can get.
+    Whereas in (b) we decompose this $\bm{H}$ into translation and rotation, which we have to estimate for every point after the starting point.
+    Therefor estimation errors add up, and we loose more and more accuracy as can be nicely seen in the above figure. (The error values are: 0.000 2.798 4.286 6.168)
+
+    \subsection*{Task 2.2}
+    Reprojection errors:\\
+    - all: 0.122 0.131 0.145 0.136\\
+    - mean: 0.133 px \\
+    - median: 0.133 px\\
+    The errors look much better and more equal than in 2.1 b.
+    
+    \begin{figure*}[h]
+        \centering
+        \includegraphics[width= 0.5 \linewidth]{../python/out_part2_2}
+        \caption{Pose estimation with Levenberg-Marquardt}
+    \end{figure*}
+
+\section{Calibrate the model via batch optimization}
+    \subsection*{Task 3.1}
+    \begin{figure*}[h]
+        \centering
+        \includegraphics[width=0.5 \linewidth]{../python/out_part3_Mod-A}
+        \caption{Plotted reprojection errors of the 3 angels and number of detected markers per image (model A)}
+    \end{figure*}
+    For model A we get the following reprojection errors: \\
+    - Maximum: 1.1296 pixels\\
+    - Average: 0.1690 pixels\\
+    - Median: 0.1510 pixels\\
+    30 iterations
+
+
+        \begin{figure*}[h]
+        \centering
+        \includegraphics[width=0.5 \linewidth]{../python/out_part3_Mod-B}
+        \caption{Plotted reprojection errors of the 3 angels and number of detected markers per image (modle B)}
+    \end{figure*}
+    For model A we get the following reprojection errors: \\
+    - Maximum: 1.1199 pixels \\
+    - Average: 0.1519 pixels \\
+    - Median: 0.1328 pixels \\
+    150 iterations
+
+        \begin{figure*}[h]
+        \centering
+        \includegraphics[width=0.5 \linewidth]{../python/out_part3_Mod-C}
+        \caption{Plotted reprojection errors of the 3 angels and number of detected markers per image (model C)}
+    \end{figure*}
+    For model C we get the following reprojection errors: \\
+    - Maximum: 1.1152 pixels\\
+    - Average: 0.1525 pixels\\
+    - Median: 0.1327 pixels \\
+    600 iterations
+
+
+    \subsection*{Task 3.2}
+    As a standard starting point you can always try zero-initialisation what has proven to work well enough in many cases.
+    But if this doesn't work you can always define a simpler model and use the best estimates of that as your new starting parameters.
+
+    \subsection*{Task 3.3}
+    No. If the '5cm length' had been 0, and the 32.5cm and 65cm ones were shorter, you could still end up with the same marker positions.
 
 
 \end{document}
