@@ -1,0 +1,102 @@
+
+% Preamble
+\documentclass[a4paper]{article} % Uses article class in A4 format
+
+%----------------------------------------------------------------------------------------
+%	FORMATTING
+%----------------------------------------------------------------------------------------
+
+\addtolength{\hoffset}{-2.25cm}
+\addtolength{\textwidth}{4.5cm}
+\addtolength{\voffset}{-3.25cm}
+\addtolength{\textheight}{5cm}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0in}
+
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\usepackage[utf8]{inputenc} % Use UTF-8 encoding
+
+\usepackage[english]{babel} % Language hyphenation and typographical rules
+
+\usepackage{amsthm, amsmath, amssymb, bm} % Mathematical typesetting
+\usepackage{float} % Improved interface for floating objects
+\usepackage{graphicx, multicol} % Enhanced support for graphics
+\usepackage{subcaption}
+\usepackage{xcolor} % Driver-independent color extensions
+\usepackage{listings}
+\usepackage{caption}
+
+%\usepackage{csquotes} % Context sensitive quotation facilities
+\usepackage[yyyymmdd]{datetime} % Uses YEAR-MONTH-DAY format for dates
+\renewcommand{\dateseparator}{-} % Sets dateseparator to '-'
+
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{bm} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{}\renewcommand{\headrulewidth}{0pt} % Blank out the default header
+\fancyfoot[L]{} % Custom footer text
+\fancyfoot[C]{} % Custom footer text
+\fancyfoot[R]{\thepage} % Custom footer text
+
+%\newcommand{\note}[1]{\marginpar{\scriptsize \textcolor{red}{#1}}} % Enables comments in red on margin
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+%----------------------------------------------------------------------------------------
+
+% Document
+\begin{document}
+%----------------------------------------------------------------------------------------
+
+%	TITLE SECTION
+    \title{Title} % Article title
+    \fancyhead[C]{}
+    \hrule \medskip % Upper rule
+    \begin{minipage}{0.295\textwidth} % Left side of title section
+        \raggedright
+        TTK4255\\ % Your lecture or course
+        \footnotesize % Authors text size
+        \hfill\\
+        Fabian Höldin % Your name, your matriculation number
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth} % Center of title section
+        \centering
+        \large % Title text size
+        Robotic Vision\\ % Assignment title and number
+        \normalsize % Subtitle text size
+        Homework 5: Two-view geometry\\ % Assignment subtitle
+    \end{minipage}
+    \begin{minipage}{0.295\textwidth} % Right side of title section
+        \raggedleft
+        \today\\ % Date
+        \footnotesize % Email text size
+        \hfill\\
+        % Your email
+    \end{minipage}
+    \medskip\hrule % Lower rule
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\section{The epipolar constraint}
+    \subsection*{Task 1.1}
+    Multiplying $\bm{\tilde{l}}$ with an arbitrary scalar $s$ results in the following equation:
+    \begin{align*}
+        \bm{\tilde{x}}^T * s * \bm{\tilde{l}} &= 0, \\
+        x* s \cos{\Theta} + y* s \sin{\Theta} &= s* \rho \quad  | \div s , \\
+        x \cos{\Theta} + y \sin{\Theta} &= \rho
+    \end{align*}
+    As you can see, scalar factor $s$ has no influence on the equation.
+
+    An arbitrary homogeneous line $\bm{\tilde{l}} = (a, b, c)$ by division through $c$
+    
+
+    \subsection*{Task 1.2}
+
+
+
+\end{document}
