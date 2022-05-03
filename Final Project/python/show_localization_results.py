@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from draw_point_cloud import *
 
-model = '../example_localization'
-query = '../example_localization/query/IMG_8210'
+model = 'C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Final Project\\example_localization'
+query = 'C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Final Project\\example_localization\\query\\IMG_8210'
 
 # 3D points [4 x num_points].
-X = np.loadtxt(f'{model}/X.txt')
+X = np.loadtxt(f'{model}\\X.txt')
 
 # Model-to-query transformation.
 # If you estimated the query-to-model transformation,
@@ -20,7 +20,7 @@ X = np.loadtxt(f'{model}/X.txt')
 T_m2q = np.loadtxt(f'{query}_T_m2q.txt')
 
 # If you have colors for your point cloud model...
-colors = np.loadtxt(f'{model}/c.txt') # RGB colors [num_points x 3].
+colors = np.loadtxt(f'{model}\\c.txt') # RGB colors [num_points x 3].
 # ...otherwise...
 # colors = np.zeros((X.shape[1], 3))
 

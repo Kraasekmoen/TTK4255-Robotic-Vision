@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from os.path import join
 
-folder = '../data_hw5_ext/calibration'
+folder = 'C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Final Project\\python\\data_hw5_ext\\calibration'
 
 K           = np.loadtxt(join(folder, 'K.txt'))
 dc          = np.loadtxt(join(folder, 'dc.txt'))

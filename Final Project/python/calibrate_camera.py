@@ -12,14 +12,14 @@ from os.path import join, basename, realpath, dirname, exists, splitext
 # This string should point to the folder containing the images
 # used for calibration. The same folder will hold the output.
 # "*.jpg" means that any file with a .jpg extension is used
-image_path_pattern = '../data_hw5_ext/calibration/*.jpg'
+image_path_pattern = 'C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Final Project\\python\\data_hw5_ext\\calibration\\*.jpg'
 output_folder = dirname(image_path_pattern)
 
 #
 # TASK: Specify these
 #
-board_size = PLACEHOLDER # Number of internal corners of the checkerboard (see tutorial)
-square_size = PLACEHOLDER # Real world length of the sides of the squares (see HW6 Task 1.5)
+board_size = (7,4) # Number of internal corners of the checkerboard (see tutorial)
+square_size = 30 # Real world length of the sides of the squares (see HW6 Task 1.5)
 
 #
 # Tip:
@@ -28,7 +28,7 @@ square_size = PLACEHOLDER # Real world length of the sides of the squares (see H
 # Below are two examples of flags that may be interesting to try.
 #
 calibrate_flags = 0 # Use default settings (three radial and two tangential)
-# calibrate_flags = cv.CALIB_ZERO_TANGENT_DIST|cv.CALIB_FIX_K3 # Disable tangential distortion and third radial distortion coefficient
+#calibrate_flags = cv.CALIB_ZERO_TANGENT_DIST|cv.CALIB_FIX_K3 # Disable tangential distortion and third radial distortion coefficient
 
 # Flags to findChessboardCorners that improve performance
 detect_flags = cv.CALIB_CB_ADAPTIVE_THRESH + cv.CALIB_CB_NORMALIZE_IMAGE + cv.CALIB_CB_FAST_CHECK

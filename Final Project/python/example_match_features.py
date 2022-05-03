@@ -3,13 +3,22 @@ import numpy as np
 import cv2 as cv
 from matlab_inspired_interface import match_features, show_matched_features
 
-I1 = cv.imread('../data_hw5_ext/IMG_8210.jpg', cv.IMREAD_GRAYSCALE)
-I2 = cv.imread('../data_hw5_ext/IMG_8211.jpg', cv.IMREAD_GRAYSCALE)
+import os
+
+datapath = os.path.join(os.getcwd(), "data_hw5_ext")
+
+
+#I1 = cv.imread('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Final Project\\python\\data_hw5_ext\\IMG_8210.jpg', cv.IMREAD_GRAYSCALE)
+#I2 = cv.imread('C:\\Users\\sindr\\Documents\\UniversiTales\\V22\\RobVis\\TTK4255-Robotic-Vision\\Final Project\\python\\data_hw5_ext\\IMG_8211.jpg', cv.IMREAD_GRAYSCALE)
+I1 = cv.imread(os.path.join(datapath, "IMG_8220.jpg"), cv.IMREAD_GRAYSCALE)
+I2 = cv.imread(os.path.join(datapath, "IMG_8225.jpg"), cv.IMREAD_GRAYSCALE)
+
+print(np.shape(I1))
 
 # NB! This script uses a very small number of features so that it runs quickly.
 # You will want to pass other options to SIFT_create. See the documentation:
 # https://docs.opencv.org/4.x/d7/d60/classcv_1_1SIFT.html
-sift = cv.SIFT_create(nfeatures=4000)
+sift = cv.SIFT_create(nfeatures=10000)
 kp1, desc1 = sift.detectAndCompute(I1, None)
 kp2, desc2 = sift.detectAndCompute(I2, None)
 kp1 = np.array([kp.pt for kp in kp1])
