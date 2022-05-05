@@ -25,3 +25,20 @@ def draw_point_cloud(X, T_m2q, xlim, ylim, zlim, colors, marker_size, frame_size
     ax.set_ylabel('Z')
     ax.set_zlabel('Y')
     plt.title('[Click, hold and drag with the mouse to rotate the view]')
+
+def draw_point_cloud_and_poses(X, Ts, xlim, ylim, zlim, colors, marker_size, frame_size):
+    ax = plt.axes(projection='3d')
+    ax.set_box_aspect((1, 1, 1))
+    if colors.max() > 1.1:
+        colors = colors.copy()/255
+    ax.scatter(X[0,:], X[2,:], X[1,:], c=colors, marker='.', s=marker_size, depthshade=False)
+    for T in Ts:
+        draw_frame(ax, np.linalg.inv(T), scale=frame_size)
+    ax.grid(False)
+    ax.set_xlim(xlim)
+    ax.set_ylim(zlim)
+    ax.set_zlim([ylim[1], ylim[0]])
+    ax.set_xlabel('X')
+    ax.set_ylabel('Z')
+    ax.set_zlabel('Y')
+    plt.title('[Click, hold and drag with the mouse to rotate the view]')

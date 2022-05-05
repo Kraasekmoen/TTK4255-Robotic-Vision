@@ -22,7 +22,7 @@ T_m2q = np.loadtxt(f'{query}_T_m2q.txt')
 # If you have colors for your point cloud model...
 colors = np.loadtxt(f'{model}\\c.txt') # RGB colors [num_points x 3].
 # ...otherwise...
-# colors = np.zeros((X.shape[1], 3))
+#colors = np.zeros((X.shape[1], 3))
 
 # These control the visible volume in the 3D point cloud plot.
 # You may need to adjust these if your model does not show up.
@@ -33,7 +33,12 @@ zlim = [0,+20]
 frame_size = 1;
 marker_size = 5
 
+# Modification: add draw_frame() from draw_point_cloud.py, which takes a translation vector
+Ts = []
+Ts.append(T_m2q)
+
 plt.figure('3D point cloud', figsize=(6,6))
-draw_point_cloud(X, T_m2q, xlim, ylim, zlim, colors=colors, marker_size=marker_size, frame_size=frame_size)
+#draw_point_cloud(X, T_m2q, xlim, ylim, zlim, colors=colors, marker_size=marker_size, frame_size=frame_size)
+draw_point_cloud_and_poses(X,Ts ,xlim, ylim, zlim, colors=colors, marker_size=marker_size, frame_size=frame_size)
 plt.tight_layout()
 plt.show()
