@@ -9,9 +9,9 @@ from estimate_E_ransac import *
 from F_from_E import *
 from figures import *
 
-K = np.loadtxt('../data_hw5_ext/calibration/K.txt')
-I1 = cv.imread('../data_hw5_ext/IMG_8210.jpg', cv.IMREAD_GRAYSCALE)
-I2 = cv.imread('../data_hw5_ext/IMG_8211.jpg', cv.IMREAD_GRAYSCALE)
+K = np.loadtxt('.\\data_hw5_ext\\calibration\\K.txt')
+I1 = cv.imread('.\\data_hw5_ext\\IMG_8210.jpg', cv.IMREAD_GRAYSCALE)
+I2 = cv.imread('.\\data_hw5_ext\\IMG_8211.jpg', cv.IMREAD_GRAYSCALE)
 
 '''
 # Initiate ORB detector
@@ -99,8 +99,8 @@ T = best_T
 X = best_X1
 print('Best solution: %d/%d points visible' % (best_num_visible, xy1.shape[1]))
 
-I1 = cv.imread('../data_hw5_ext/IMG_8210.jpg', cv.COLOR_BGR2RGB)
-I2 = cv.imread('../data_hw5_ext/IMG_8211.jpg', cv.COLOR_BGR2RGB)
+I1 = cv.imread('.\\data_hw5_ext\\IMG_8210.jpg', cv.COLOR_BGR2RGB)
+I2 = cv.imread('.\\data_hw5_ext\\IMG_8211.jpg', cv.COLOR_BGR2RGB)
 #np.random.seed(123) # Comment out to get a random selection each time
 draw_correspondences(I1, I2, uv1, uv2, F_from_E(E, K), sample_size=8)
 draw_point_cloud(X, I1, uv1, xlim=[-10,+10], ylim=[-5,+5], zlim=[5,20])

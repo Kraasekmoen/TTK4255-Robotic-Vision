@@ -14,19 +14,19 @@ from F_from_E import *
 import os
 import random
 
-K = np.loadtxt('../data_hw5_ext/calibration/K.txt')
-dc = np.loadtxt('../data_hw5_ext/calibration/dc.txt')
+K = np.loadtxt('.\\data_hw5_ext\\calibration\\K.txt')
+dc = np.loadtxt('.\\data_hw5_ext\\calibration\\dc.txt')
 
-path = '../data_hw5_ext'
-file = '/IMG_8221.jpg' #random.choice(os.listdir("../data_hw5_ext/"))
+path = '.\\data_hw5_ext'
+file = '\\IMG_8221.jpg' #random.choice(os.listdir(".\\data_hw5_ext\\"))
 
-I_rand = cv.imread('../data_hw5_ext/IMG_8211.jpg', cv.IMREAD_GRAYSCALE)
+I_rand = cv.imread('.\\data_hw5_ext\\IMG_8211.jpg', cv.IMREAD_GRAYSCALE)
 
 sift = cv.SIFT_create(nfeatures=4000)
 kp3, desc3 = sift.detectAndCompute(I_rand, None)
 kp3 = np.array([kp.pt for kp in kp3])
 
-X_descs = np.loadtxt('./3D_features.txt')
+X_descs = np.loadtxt('.\\3D_features.txt')
 
 X = X_descs[:, :4]
 desc1 = X_descs[:, -256:-128].astype('float32')
@@ -86,14 +86,14 @@ print('Reprojection error: ')
 print('all:', ' '.join(['%.03f' % e for e in errors]))
 print('mean: %.03f px' % np.mean(errors))
 print('median: %.03f px' % np.median(errors))
-print('Final p values of camera: ', all_p[-1,:])
-print('Final Jacobian: ', jac)
+#print('Final p values of camera: ', all_p[-1,:])
+#print('Final Jacobian: ', jac)
 
 np.savetxt('jacobian.txt', jac )
 #-----------------------------------------------------------------------------------------------------------------------
 #uv_cloud = np.ones([X.shape[0],3])
 uv_cloud= project(K, X.T)
-I1 = cv.imread('../data_hw5_ext/IMG_8210.jpg', cv.COLOR_BGR2RGB)
+I1 = cv.imread('.\\data_hw5_ext\\IMG_8210.jpg', cv.COLOR_BGR2RGB)
 c = I1[uv_cloud[1,:].astype(np.int32), uv_cloud[0,:].astype(np.int32), :]
 
 colors = c / 255 #np.zeros((X_in.shape[1], 3))
@@ -109,8 +109,23 @@ zlim = [0,+20]
 
 frame_size = 1
 marker_size = 5
-
+"""
 plt.figure('3D point cloud', figsize=(10,10))
 draw_point_cloud(X.T, T_m2q, xlim, ylim, zlim, colors=colors, marker_size=marker_size, frame_size=frame_size)
 plt.tight_layout()
 plt.show()
+"""
+
+def estimate_pose_covariance(jacobian):
+    """Returns a vector of the sqrt of the diagonal elements of the covariance, based on a 1st-order approximation"""
+    # scipy.least_squares returns jacobian at the solution
+    sigma_r = np.eye(max(np.shape(jacobian)[0], np.shape(jacobian)[1])) # Jacobian should be 6x2n or 2nx6, dont know which. sigma_r should be 2nx2n
+    core = jacobian.T@np.linalg.inv(sigma_r)@jacobian
+    sigma_p = np.linalg.inv(core)
+    return np.sqrt(sigma_p.diagonal())
+
+
+### NOTE! The report wants the rotation deviance reported in degrees, so you gotta multiply with 180/pi. 
+### I dunno which index of the parameter vector is which, sooo ....
+covars = estimate_pose_covariance(jac)
+print("Pose parameter std. deviations:\nRotations:    ", covars[:3]*(180/np.pi), "\nTranslations: ",covars[3:])
