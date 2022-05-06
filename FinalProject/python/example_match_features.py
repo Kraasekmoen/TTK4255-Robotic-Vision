@@ -99,8 +99,10 @@ T = best_T
 X = best_X1
 print('Best solution: %d/%d points visible' % (best_num_visible, xy1.shape[1]))
 
-I1 = cv.imread('../data_hw5_ext/IMG_8210.jpg', cv.COLOR_BGR2RGB)
-I2 = cv.imread('../data_hw5_ext/IMG_8211.jpg', cv.COLOR_BGR2RGB)
+I1 = cv.imread('../data_hw5_ext/IMG_8210.jpg') #, cv.IMREAD_COLOR)
+I1 = cv.cvtColor(I1, cv.COLOR_BGR2RGB)
+I2 = cv.imread('../data_hw5_ext/IMG_8211.jpg')
+I2 = cv.cvtColor(I2, cv.COLOR_BGR2RGB)
 #np.random.seed(123) # Comment out to get a random selection each time
 draw_correspondences(I1, I2, uv1, uv2, F_from_E(E, K), sample_size=8)
 draw_point_cloud(X, I1, uv1, xlim=[-10,+10], ylim=[-5,+5], zlim=[5,20])

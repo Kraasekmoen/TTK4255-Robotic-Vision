@@ -16,7 +16,8 @@ def draw_point_cloud(X, T_m2q, xlim, ylim, zlim, colors, marker_size, frame_size
     if colors.max() > 1.1:
         colors = colors.copy()/255
     ax.scatter(X[0,:], X[2,:], X[1,:], c=colors, marker='.', s=marker_size, depthshade=False)
-    draw_frame(ax, np.linalg.inv(T_m2q), scale=frame_size)
+    for cams in T_m2q:
+        draw_frame(ax, np.linalg.inv(cams), scale=frame_size)
     ax.grid(False)
     ax.set_xlim(xlim)
     ax.set_ylim(zlim)
